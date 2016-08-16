@@ -75,8 +75,7 @@
 			"src/Aliases.php",
 			"src/Defines.php",
 			"src/GlobalFunctions.php",
-			"DefaultSettings.php",
-			"SemanticMediaWiki.php"
+			"DefaultSettings.php"
 		],
 		"classmap": [
 			"includes/",
