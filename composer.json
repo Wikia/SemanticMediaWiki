@@ -1,5 +1,5 @@
 {
-	"name": "mediawiki/semantic-media-wiki",
+	"name": "wikia/semantic-media-wiki",
 	"type": "mediawiki-extension",
 	"description": "MediaWiki extension that lets you store and query structured data within wiki pages",
 	"keywords": [
