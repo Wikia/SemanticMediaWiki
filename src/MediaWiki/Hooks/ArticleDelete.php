@@ -42,8 +42,7 @@ class ArticleDelete {
 				$this->doDelete( $this->wikiPage->getTitle() );
 			} );
 
-		$deferredCallableUpdate->setOrigin( __METHOD__ );
-		$deferredCallableUpdate->pushUpdate();
+		$deferredCallableUpdate->pushToDeferredUpdateList();
 
 		return true;
 	}
