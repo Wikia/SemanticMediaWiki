@@ -48,11 +48,11 @@ class SemanticMediaWiki {
 				'[http://korrekt.org Markus Krötzsch]',
 				'[https://www.mediawiki.org/wiki/User:Jeroen_De_Dauw Jeroen De Dauw]',
 				'James Hong Kong',
-				'[https://www.semantic-mediawiki.org/wiki/Contributors ...]'
+				'[https://www.semantic-mediawiki.org/wiki/Contributors ...]',
 				),
 			'url' => 'https://www.semantic-mediawiki.org',
 			'descriptionmsg' => 'smw-desc',
-			'license-name'   => 'GPL-2.0+'
+			'license-name'   => 'GPL-2.0+',
 		);
 
 		// A flag used to indicate SMW defines a semantic extension type for extension credits.
@@ -73,6 +73,19 @@ class SemanticMediaWiki {
 
 		// Load default settings
 		require_once __DIR__ . '/DefaultSettings.php';
+
+		// Wikia change - begin
+		// SUS-1232: allow SemanticMediaWiki config variables to be customized via WikiFactory
+
+		/** @var array $smwDefaults */
+		foreach ( $smwDefaults as $variableName => $variableDefaultValue ) {
+			if ( !array_key_exists( $variableName, $GLOBALS ) ) {
+				// variable was not set via WikiFactory, so we can safely use a default coming from SMW's DefaultSettings.php (i.e. $smwDefaults)
+				$GLOBALS[ $variableName ] = $variableDefaultValue;
+			}
+		}
+
+		// Wikia change - end
 
 		// Because of MW 1.19 we need to register message files here
 		$GLOBALS['wgMessagesDirs']['SemanticMediaWiki'] = $GLOBALS['smwgIP'] . 'i18n';
@@ -131,7 +144,7 @@ class SemanticMediaWiki {
 
 		return array(
 			'store' => $store,
-			'db'    => isset( $GLOBALS['wgDBtype'] ) ? $GLOBALS['wgDBtype'] : 'N/A'
+			'db'    => isset( $GLOBALS['wgDBtype'] ) ? $GLOBALS['wgDBtype'] : 'N/A',
 		);
 	}
 
