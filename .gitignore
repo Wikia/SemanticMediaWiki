@@ -6,6 +6,7 @@ extensions/
 
 composer.phar*
 *.zip
+*.tar
 composer.lock
 
 !.*
