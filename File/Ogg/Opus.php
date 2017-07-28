@@ -20,8 +20,6 @@
 // | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA |
 // +----------------------------------------------------------------------------+
 
-require_once('File/Ogg/Media.php');
-
 define( 'OGG_OPUS_COMMENTS_PAGE_OFFSET', 1 );
 
 /**

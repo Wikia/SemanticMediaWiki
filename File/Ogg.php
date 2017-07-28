@@ -124,14 +124,6 @@ class OggException extends Exception {
     // Stub
 }
 
-require_once('File/Ogg/Bitstream.php');
-require_once("File/Ogg/Flac.php");
-require_once("File/Ogg/Speex.php");
-require_once("File/Ogg/Theora.php");
-require_once("File/Ogg/Vorbis.php");
-require_once("File/Ogg/Opus.php");
-
-
 /**
  * Class for parsing a ogg bitstream.
  *

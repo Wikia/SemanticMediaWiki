@@ -16,15 +16,12 @@
         "./"
     ],
     "license": "GNU LGPL",
-    "name": "pear/file_ogg",
+    "name": "wikia/file_ogg",
     "support": {
         "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=File_Ogg",
         "source": "https://github.com/pear/File_Ogg"
     },
     "type": "library",
-    "require": {
-        "pear/pear_exception": "*"
-    },
     "require-dev": {
         "phpunit/phpunit": "*"
     }

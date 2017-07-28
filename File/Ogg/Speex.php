@@ -21,8 +21,6 @@
 // | Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA |
 // +----------------------------------------------------------------------------+
 
-require_once('File/Ogg/Media.php');
-
 /**
  * @author      David Grant <david@grant.org.uk>, Tim Starling <tstarling@wikimedia.org>
  * @category    File
@@ -47,12 +45,12 @@ class File_Ogg_Speex extends File_Ogg_Media
             (intval(substr( $this->_lastGranulePos, 0, 8 ), 16 ) * pow(2, 32)
             + intval( substr( $this->_lastGranulePos, 8, 8 ), 16 ))
             / $this->_header['rate'];
-     
-         $startSec	 =        
+
+         $startSec	 =
             (intval(substr( $this->_firstGranulePos, 0, 8 ), 16 ) * pow(2, 32)
             + intval(substr( $this->_firstGranulePos, 8, 8 ), 16 ))
             / $this->_header['rate'];
-            
+
          //make sure the offset is worth taking into account oggz_chop related hack
 	    if( $startSec > 1){
             $this->_streamLength = $endSec - $startSec;
@@ -66,7 +64,7 @@ class File_Ogg_Speex extends File_Ogg_Media
      * Get a short string describing the type of the stream
      * @return string
      */
-    function getType() 
+    function getType()
     {
         return 'Speex';
     }
