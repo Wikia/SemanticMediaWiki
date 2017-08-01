@@ -58,7 +58,7 @@
 		"mediawiki/semantic-mediawiki": "*"
 	},
 	"provide": {
-		"mediawiki/semantic-media-wiki": "~2.4"
+		"mediawiki/semantic-media-wiki": "2.4.2.9"
 	},
 	"suggest": {
 		"mediawiki/semantic-result-formats": "Additional result formats for SMW queries",
