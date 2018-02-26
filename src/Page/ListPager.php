@@ -54,7 +54,7 @@ class ListPager {
 			[
 				'id'     => 'search',
 				'name'   => 'foo',
-				'action' => $GLOBALS['wgScript']
+				'action' => wfScript()
 			],
 			Html::hidden(
 			'title',

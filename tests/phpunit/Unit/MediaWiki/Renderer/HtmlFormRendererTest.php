@@ -4,6 +4,7 @@ namespace SMW\Tests\MediaWiki\Renderer;
 
 use SMW\MediaWiki\Renderer\HtmlFormRenderer;
 use SMW\Tests\Utils\UtilityFactory;
+use SMW\Tests\Utils\Validators\StringValidator;
 
 /**
  * @covers \SMW\MediaWiki\Renderer\HtmlFormRenderer
@@ -16,12 +17,26 @@ use SMW\Tests\Utils\UtilityFactory;
  */
 class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 
+	/** @var StringValidator $stringValidator */
 	private $stringValidator;
+
+	/** @var string $scriptPath */
+	private $scriptPath;
 
 	protected function setUp() {
 		parent::setUp();
 
 		$this->stringValidator = UtilityFactory::getInstance()->newValidatorFactory()->newStringValidator();
+
+		$this->scriptPath = $GLOBALS['wgScript'];
+
+		$GLOBALS['wgScript'] = '/test-path/index.php';
+	}
+
+	protected function tearDown() {
+		parent::tearDown();
+
+		$GLOBALS['wgScript'] = $this->scriptPath;
 	}
 
 	public function testCanConstruct() {
@@ -108,7 +123,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 			->addSubmitButton( 'FindFoo' );
 
 		$expected = array(
-			'form id="smw-form-SomeForm" name="SomeForm" method="get"',
+			'form id="smw-form-SomeForm" name="SomeForm" method="get" action="/test-path/index.php"',
 			'<p class="smw-form-paragraph">SomeDescription</p>',
 			'input name="foo" size="333" value="Foo" id="FooId"',
 			'input name="AnotherInputFieldName" size="20" value="AnotherInputFieldValue" id="AnotherInputFieldName"',
@@ -158,7 +173,7 @@ class HtmlFormRendererTest extends \PHPUnit_Framework_TestCase {
 				'optionslistId');
 
 		$expected = array(
-			'form id="smw-form-optionsSelecListForm" name="optionsSelecListForm" method="get"',
+			'form id="smw-form-optionsSelecListForm" name="optionsSelecListForm" method="get" action="/test-path/index.php"',
 			'<fieldset id="smw-form-fieldset-optionsSelecListForm">',
 			'<label for="optionslistId">optionlistLabel</label>&#160;',
 			'<select name="optionlistName" id="optionslistId" class="smw-form-select">',

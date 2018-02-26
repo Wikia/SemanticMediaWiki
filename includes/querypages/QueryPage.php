@@ -160,7 +160,7 @@ abstract class QueryPage extends \QueryPage {
 
 		return Xml::tags( 'form', array(
 			'method' => 'get',
-			'action' => htmlspecialchars( $GLOBALS['wgScript'] ),
+			'action' => \Sanitizer::encodeAttribute( wfScript() ),
 			'class' => 'plainlinks'
 		), Html::hidden( 'title', $this->getContext()->getTitle()->getPrefixedText() ) .
 			Xml::fieldset( $this->msg( 'smw-special-property-searchform-options' )->text(),

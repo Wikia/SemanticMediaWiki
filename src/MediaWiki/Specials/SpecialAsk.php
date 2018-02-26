@@ -497,7 +497,8 @@ class SpecialAsk extends SpecialPage {
 		return Html::rawElement(
 			'form',
 			[
-				'action' => $GLOBALS['wgScript'],
+				'id' => 'smw-ask-form',
+				'action' => wfScript(),
 				'name' => 'ask',
 				'method' => 'get'
 			],

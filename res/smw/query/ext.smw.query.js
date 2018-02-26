@@ -138,7 +138,7 @@
 
 			var attr = {
 				'class': 'query-link',
-				'href' : mw.config.get( 'wgScript' ) + '?' + $.param( args )
+				'href' : mw.util.wikiScript() + '?' + $.param( args )
 			} ;
 
 			$.extend( attr, this.linkAttributes );

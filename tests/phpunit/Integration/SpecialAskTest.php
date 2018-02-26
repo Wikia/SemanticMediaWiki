@@ -42,6 +42,11 @@ class SpecialAskTest extends \PHPUnit_Framework_TestCase {
 		$result = $document->loadXML( $html );
 		$this->assertTrue( $result );
 
+		$smwAskForm = $document->getElementById( 'smw-ask-form' );
+
+		$this->assertNotNull( $smwAskForm );
+		$this->assertStringEndsWith( 'index.php', $smwAskForm->getAttribute( 'action' ) );
+
 		$this->restoreGlobals( $params );
 	}
 

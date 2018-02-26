@@ -473,7 +473,7 @@ class HtmlFormRenderer {
 			'id'     => $this->defaultPrefix . "-{$this->name}",
 			'name'   => $this->name,
 			'method' => in_array( $this->method, array( 'get', 'post' ) ) ? $this->method : 'get',
-			'action' => htmlspecialchars( $this->actionUrl ? $this->actionUrl : $GLOBALS['wgScript'] )
+			'action' => htmlspecialchars( $this->actionUrl ? $this->actionUrl : wfScript() )
 		), Html::hidden(
 			'title',
 			strtok( $this->title->getPrefixedText(), '/' )
