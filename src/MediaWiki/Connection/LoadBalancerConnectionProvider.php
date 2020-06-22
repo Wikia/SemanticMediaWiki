@@ -3,6 +3,7 @@
 namespace SMW\MediaWiki\Connection;
 
 use DatabaseBase;
+use Hooks;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
@@ -128,8 +129,8 @@ class LoadBalancerConnectionProvider implements IConnectionProvider {
 	 * @see wfGetLB
 	 */
 	private function initLoadBalancer( $wiki = false ) {
-
 		$servicesFactory = ServicesFactory::getInstance();
+		Hooks::run( 'SMW::OverrideDbName', [ &$wiki ] );
 
 		if ( $wiki === false ) {
 			return $this->loadBalancer = $servicesFactory->create( 'DBLoadBalancer' );

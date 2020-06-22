@@ -2,6 +2,7 @@
 
 namespace SMW\MediaWiki\Connection;
 
+use Hooks;
 use Psr\Log\LoggerAwareTrait;
 use RuntimeException;
 use SMW\Connection\ConnectionProvider as IConnectionProvider;
@@ -145,7 +146,10 @@ class ConnectionProvider implements IConnectionProvider {
 	}
 
 	private function newLoadBalancerConnectionProvider( $id ) {
-		return new LoadBalancerConnectionProvider( $id );
+		$groups = [];
+		$wiki = null;
+		Hooks::run( 'SMW::OverrideDbName', [ &$wiki ] );
+		return new LoadBalancerConnectionProvider( $id, $groups, $wiki );
 	}
 
 	private function newTransactionHandler() {

@@ -83,8 +83,10 @@ abstract class TableBuilder implements TableBuilderInterface, MessageReporterAwa
 		if ( !is_a( $instance, static::class ) ) {
 			throw new RuntimeException( get_class( $instance ) . " instance doesn't match " . static::class );
 		}
+		$dbName = isset( $GLOBALS['wgDBname'] ) ? "`". $GLOBALS['wgDBname'] . "`." : '';
+		$dbName = isset( $GLOBALS['smwgDBname'] ) ? "`". $GLOBALS['smwgDBname'] . "`." : $dbName;
 
-		$instance->setConfig( 'wgDBname', $GLOBALS['wgDBname'] );
+		$instance->setConfig( 'wgDBname', $dbName );
 		$instance->setConfig( 'wgDBTableOptions', $GLOBALS['wgDBTableOptions'] );
 
 		return $instance;

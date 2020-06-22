@@ -2,6 +2,7 @@
 
 namespace SMW;
 
+use Hooks;
 use SMW\MediaWiki\MessageFactory;
 
 /**
@@ -105,9 +106,8 @@ class SetupCheck {
 			$this->errorType = 'extensionload';
 		} elseif ( $this->setupFile->inMaintenanceMode() ) {
 			$this->errorType = 'maintenance';
-		} elseif ( $this->setupFile->isGoodSchema() === false ) {
-			$this->errorType = 'schema';
 		}
+		Hooks::run( 'SMW::SetupCheck::hasError', [ &$this->errorType ] );
 
 		return $this->errorType !== '';
 	}
@@ -154,7 +154,6 @@ class SetupCheck {
 	 * @param boolean $isCli
 	 */
 	public function showErrorAndAbort( $isCli = false ) {
-
 		echo $this->getError( $isCli );
 
 		if ( ob_get_level() ) {

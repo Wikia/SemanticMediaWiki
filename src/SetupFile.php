@@ -236,6 +236,8 @@ class SetupFile {
 		$key = self::makeUpgradeKey( $vars );
 		$id = Site::id();
 
+		Hooks::run( 'SMW::SetupFile::finalize', [ &$id ] );
+
 		if (
 			isset( $vars['smw.json'][$id][self::UPGRADE_KEY] ) &&
 			$key === $vars['smw.json'][$id][self::UPGRADE_KEY] &&
