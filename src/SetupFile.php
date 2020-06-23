@@ -3,6 +3,7 @@
 namespace SMW;
 
 use SMW\Exception\FileNotWritableException;
+use Hooks;
 use SMW\Utils\File;
 use SMW\SQLStore\Installer;
 
