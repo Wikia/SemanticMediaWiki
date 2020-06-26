@@ -137,9 +137,10 @@ class EntityIdDisposerJob extends Job {
 
 		// Make sure the script is only executed from the command line to avoid
 		// Special:RunJobs to execute a queued job
-		if ( $this->waitOnCommandLineMode() ) {
-			return true;
-		}
+		// We don't need this since our tasks shouldn't timeout
+		// if ( $this->waitOnCommandLineMode() ) {
+		// return true;
+		// }
 
 		$applicationFactory = ApplicationFactory::getInstance();
 		$connection = $applicationFactory->getStore()->getConnection( 'mw.db' );

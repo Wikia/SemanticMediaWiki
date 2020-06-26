@@ -32,9 +32,10 @@ class PropertyStatisticsRebuildJob extends Job {
 	 */
 	public function run() {
 
-		if ( $this->waitOnCommandLineMode() ) {
-			return true;
-		}
+		// we don't need this
+		// if ( $this->waitOnCommandLineMode() ) {
+		//  return true;
+		// }
 
 		$deferredCallableUpdate = ApplicationFactory::getInstance()->newDeferredTransactionalCallableUpdate(
 			[ $this, 'rebuild' ]
