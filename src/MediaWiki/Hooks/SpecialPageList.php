@@ -78,6 +78,15 @@ class SpecialPageList extends HookHandler {
 				'page' => 'SMW\SpecialWantedProperties'
 			]
 		];
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Disables MissingRedirectAnnotations special page as is not important and because query
+		 * used on that page in MissingRedirectLookup is using "LEFT JOIN" between MW and SMW
+		 * table, which is problematic when used with external SMW DB. (PLATFORM-4795)
+		 */
+		unset( $specials['MissingRedirectAnnotations'] );
+		/** Fandom change - end */
 
 		// Register data
 		foreach ( $specials as $special => $page ) {
