@@ -9,6 +9,7 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
+use Wikimedia\Rdbms\IDatabase;
 
 /**
  * This adapter class covers MW DB specific operations. Changes to the
@@ -354,7 +355,14 @@ class Database {
 			$connection->clearFlag( DBO_TRX );
 
 			if ( $autoTrx && $connection->trxLevel() ) {
-				$connection->commit( __METHOD__ );
+				/**
+				 * Fandom change - begin
+				 * @author ttomalak
+				 * Fix `Expected mass commit of all peer transactions (DBO_TRX set)` error when
+				 * using enforce_gtid_consistency
+				 */
+				$connection->commit( __METHOD__, IDatabase::FLUSHING_INTERNAL );
+				/** Fandom change - end */
 			}
 		}
 
