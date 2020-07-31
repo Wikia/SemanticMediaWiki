@@ -9,7 +9,6 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\Connection\ConnRef;
 use UnexpectedValueException;
-use Wikimedia\Rdbms\IDatabase;
 
 /**
  * This adapter class covers MW DB specific operations. Changes to the
@@ -348,6 +347,12 @@ class Database {
 			$sql = str_replace( 'RAND', 'RANDOM', $sql );
 		}
 
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Fix `Expected mass commit of all peer transactions (DBO_TRX set)` error when
+		 * using enforce_gtid_consistency
+		 */
 		// https://github.com/wikimedia/mediawiki/blob/42d5e6f43a00eb8bedc3532876125f74e3188343/includes/deferred/AutoCommitUpdate.php
 		// https://github.com/wikimedia/mediawiki/blob/f7dad57c64db3eb1296894c2d3ae97b9f7f27c4c/includes/installer/DatabaseInstaller.php#L157
 		if ( $this->flags === self::AUTO_COMMIT ) {
@@ -355,14 +360,7 @@ class Database {
 			$connection->clearFlag( DBO_TRX );
 
 			if ( $autoTrx && $connection->trxLevel() ) {
-				/**
-				 * Fandom change - begin
-				 * @author ttomalak
-				 * Fix `Expected mass commit of all peer transactions (DBO_TRX set)` error when
-				 * using enforce_gtid_consistency
-				 */
-				$connection->commit( __METHOD__, IDatabase::FLUSHING_INTERNAL );
-				/** Fandom change - end */
+				$connection->startAtomic( $fname );
 			}
 		}
 
@@ -378,8 +376,11 @@ class Database {
 
 		if ( $this->flags === self::AUTO_COMMIT && $autoTrx ) {
 			$connection->setFlag( DBO_TRX );
+			if ( $connection->trxLevel() ) {
+				$connection->endAtomic( $fname );
+			}
 		}
-
+		/** Fandom change - end */
 		// State is only valid for a single transaction
 		$this->flags = false;
 
