@@ -56,6 +56,18 @@ class ExtensionSchemaUpdates {
 	 */
 	public function process() {
 
+		/**
+		 * Fandom change - begin
+		 * Allow to prevent updates if not necessary
+		 *
+		 * PLATFORM-5337
+		 * @author ttomalak
+		 */
+		if ( !\Hooks::run('SMW::Setup::BeforeUpdate') ) {
+			return true;
+		}
+		/** Fandom change - end */
+
 		$verbose = true;
 
 		$options = new Options(
