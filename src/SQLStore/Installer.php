@@ -2,6 +2,7 @@
 
 namespace SMW\SQLStore;
 
+use DeferredUpdates;
 use Hooks;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterAwareTrait;
@@ -305,28 +306,40 @@ class Installer implements MessageReporter {
 			return $messageReporter->reportMessage( "\nSkipping supplement job creation.\n" );
 		}
 
-		$messageReporter->reportMessage( "\nAdding supplement jobs ...\n" );
-		$messageReporter->reportMessage( "   ... property statistics rebuild job ...\n" );
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Schedule Jobs only after finishing all setup tasks
+		 */
+		DeferredUpdates::addCallableUpdate(
+			function () use ( $messageReporter ) {
+				$messageReporter->reportMessage( "\nAdding supplement jobs ...\n" );
+				$messageReporter->reportMessage( "   ... property statistics rebuild job ...\n" );
+				$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
 
-		$title = \Title::newFromText( 'SMW\SQLStore\Installer' );
+				$job = new PropertyStatisticsRebuildJob(
+					$title,
+					PropertyStatisticsRebuildJob::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
+				);
 
-		$job = new PropertyStatisticsRebuildJob(
-			$title,
-			PropertyStatisticsRebuildJob::newRootJobParams( 'smw.propertyStatisticsRebuild', $title ) + [ 'waitOnCommandLine' => true ]
+				$job->insert();
+
+				$messageReporter->reportMessage( "   ... entity disposer job ...\n" );
+
+				$job = new EntityIdDisposerJob(
+					$title,
+					EntityIdDisposerJob::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
+				);
+
+				$job->insert();
+
+				$messageReporter->reportMessage( "   ... done.\n" );
+			},
+			DeferredUpdates::POSTSEND
 		);
-
-		$job->insert();
-
-		$messageReporter->reportMessage( "   ... entity disposer job ...\n" );
-
-		$job = new EntityIdDisposerJob(
-			$title,
-			EntityIdDisposerJob::newRootJobParams( 'smw.entityIdDisposer', $title ) + [ 'waitOnCommandLine' => true ]
-		);
-
-		$job->insert();
-
-		$messageReporter->reportMessage( "   ... done.\n" );
+		/**
+		 * Fandom change - end
+		 */
 	}
 
 	private function outputReport( $messageReporter, $startTime, $executionTimes ) {
