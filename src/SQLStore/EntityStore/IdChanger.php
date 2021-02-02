@@ -57,8 +57,15 @@ class IdChanger {
 	 * @return \stdClass
 	 */
 	public function move( $curid, $targetid = 0 ) {
-
-		$connection = $this->store->getConnection( 'mw.db' );
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Reuse same DB connection during SMW setup
+		 */
+		$connection = $this->store->getConnection( DB_MASTER );
+		/**
+		 * Fandom change - end
+		 */
 
 		$row = $connection->selectRow(
 			SQLStore::ID_TABLE,
@@ -164,9 +171,15 @@ class IdChanger {
 	 * @param boolean $po_data stating if to update property/object references
 	 */
 	public function change( $old_id, $new_id, $old_ns = -1, $new_ns = -1, $s_data = true, $po_data = true ) {
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Reuse same DB connection during SMW setup
+		 */
+		$connection = $this->store->getConnection( DB_MASTER );
+		/**
+		 * Fandom change - end
+		 */
 		// Change all id entries in property tables:
 		foreach ( $this->store->getPropertyTables() as $proptable ) {
 
@@ -240,8 +253,15 @@ class IdChanger {
 	}
 
 	private function update_concept( $old_id, $new_id, $old_ns, $new_ns, $s_data, $po_data ) {
-
-		$connection = $this->store->getConnection( 'mw.db' );
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Reuse same DB connection during SMW setup
+		 */
+		$connection = $this->store->getConnection( DB_MASTER );
+		/**
+		 * Fandom change - end
+		 */
 
 		if ( $s_data && ( ( $old_ns == -1 ) || ( $old_ns == SMW_NS_CONCEPT ) ) ) {
 			if ( ( $new_ns == -1 ) || ( $new_ns == SMW_NS_CONCEPT ) ) {

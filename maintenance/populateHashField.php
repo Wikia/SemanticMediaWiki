@@ -129,9 +129,15 @@ class populateHashField extends \Maintenance {
 	 * @return Iterator
 	 */
 	public function fetchRows() {
-
-		$connection = $this->store->getConnection( 'mw.db' );
-
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Reuse same DB connection during SMW setup
+		 */
+		$connection = $this->store->getConnection( DB_MASTER );
+		/**
+		 * Fandom change - end
+		 */
 		return $connection->select(
 			SQLStore::ID_TABLE,
 			[
@@ -160,7 +166,15 @@ class populateHashField extends \Maintenance {
 			$rows = $this->fetchRows();
 		}
 
-		$connection = $this->store->getConnection( 'mw.db' );
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Reuse same DB connection during SMW setup
+		 */
+		$connection = $this->store->getConnection( DB_MASTER );
+		/**
+		 * Fandom change - end
+		 */
 		$idTable = $this->store->getObjectIds();
 
 		$count = 0;
