@@ -68,7 +68,6 @@ class SkinAfterContentTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider outputDataProvider
 	 */
 	public function testperformUpdateFactboxPresenterIntegration( $parameters, $expected ) {
-
 		$data = '';
 
 		$instance = new SkinAfterContent( $parameters['skin'] );

@@ -69,6 +69,9 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider outputDataProvider
 	 */
 	public function testProcessAndRetrieveContent( $parameters, $expected ) {
+		$this->entityCache->expects( $this->any() )
+			->method( 'fetch' )
+			->will( $this->returnValue( false ) );
 
 		$this->testEnvironment->addConfiguration(
 			'smwgNamespacesWithSemanticLinks',
@@ -258,6 +261,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
 
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getRevisionId' )
+			->will( $this->returnValue( 10001 ) );
+
 		$provider[] = [
 			[
 				'smwgNamespacesWithSemanticLinks' => [ NS_MAIN => true ],
@@ -302,6 +309,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getTitle' )
 			->will( $this->returnValue( $title ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getRevisionId' )
+			->will( $this->returnValue( 9001 ) );
 
 		$context = new \RequestContext( );
 		$context->setRequest( new \FauxRequest( [ 'oldid' => 9001 ], true ) );
@@ -398,6 +409,10 @@ class CachedFactboxTest extends \PHPUnit_Framework_TestCase {
 		$outputPage->expects( $this->atLeastOnce() )
 			->method( 'getContext' )
 			->will( $this->returnValue( new \RequestContext() ) );
+
+		$outputPage->expects( $this->atLeastOnce() )
+			->method( 'getRevisionId' )
+			->will( $this->returnValue( 10004 ) );
 
 		$semanticData = $this->getMockBuilder( '\SMW\SemanticData' )
 			->disableOriginalConstructor()
