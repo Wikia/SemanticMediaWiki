@@ -240,7 +240,21 @@ class ContentParser {
 
 		// Revision::READ_NORMAL is not specified in MW 1.19
 		if ( defined( 'Revision::READ_NORMAL' ) ) {
-			$this->revision = Revision::newFromTitle( $this->getTitle(), false, Revision::READ_NORMAL );
+			/**
+			 * Fandom change - begin
+			 * PLATFORM-5758
+			 * @author ttomalak
+			 * During page move not all changes are populated from replica to master yet.
+			 * We should make sure that the fetched revision is newest one, to prevent
+			 * error of invalid page_id "owner". In future version of MW and SMW there is
+			 * a lot of changes around RevisionStore, which could fix this issue,
+			 * so it should be revisited on next upgrade. Providing LatestRevId from title
+			 * making it first to check in REPLICA_DB, and if it don't find it there it will
+			 * try to request from MASTER_DB.
+			 */
+			$title = $this->getTitle();
+			$this->revision = Revision::newFromTitle( $title, $title->getLatestRevID(), Revision::READ_NORMAL );
+			/** Fandom change - end */
 		} else {
 			$this->revision = Revision::newFromTitle( $this->getTitle() );
 		}
