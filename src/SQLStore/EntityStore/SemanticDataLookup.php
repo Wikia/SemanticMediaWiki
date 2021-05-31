@@ -520,7 +520,7 @@ class SemanticDataLookup {
 			$caller .= " (for " . $requestOptions->getCaller() . ")";
 		}
 
-		$res = $connection->query(
+		$res = $connection->readQuery(
 			$query,
 			$caller
 		);
