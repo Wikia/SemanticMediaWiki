@@ -72,7 +72,6 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 	 * @dataProvider outputDataProvider
 	 */
 	public function testProcess( $parameters, $expected ) {
-
 		$this->namespaceExaminer->expects( $this->any() )
 			->method( 'isSemanticEnabled' )
 			->will( $this->returnValue( $parameters['smwgNamespacesWithSemanticLinks'] ) );
