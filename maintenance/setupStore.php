@@ -2,6 +2,7 @@
 
 namespace SMW\Maintenance;
 
+use MediaWiki\MediaWikiServices;
 use MediaWiki\Maintenance\Maintenance;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
@@ -112,7 +113,12 @@ class setupStore extends Maintenance {
 	 * @since 3.0
 	 */
 	public function getConnection() {
-		return $this->getDB( DB_PRIMARY );
+		global $wgSMWDB, $wgSMWDbName;
+
+		return MediaWikiServices::getInstance()
+			->getDBLoadBalancerFactory()
+			->getExternalLB( $wgSMWDB )
+			->getMaintenanceConnectionRef( DB_PRIMARY, [], $wgSMWDbName );
 	}
 
 	/**
