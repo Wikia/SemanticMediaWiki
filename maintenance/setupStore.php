@@ -113,12 +113,24 @@ class setupStore extends Maintenance {
 	 * @since 3.0
 	 */
 	public function getConnection() {
-		global $wgSMWDB, $wgSMWDbName;
+		/**
+		 * Fandom change - begin
+		 * Allow to setup SMW in external database
+		 */
+		$services = MediaWikiServices::getInstance();
+		$config = $services->getMainConfig();
+		$wgSMWDB = $config->get( 'SMWDB' );
+		$wgSMWDbName = $config->get( 'SMWDbName' );
+		$wgSMWUseExternalDB = $config->get( 'SMWUseExternalDB' );
+		if ( !$wgSMWUseExternalDB ) {
+			return $this->getDB( DB_PRIMARY );
+		}
 
-		return MediaWikiServices::getInstance()
+		return $services
 			->getDBLoadBalancerFactory()
 			->getExternalLB( $wgSMWDB )
 			->getMaintenanceConnectionRef( DB_PRIMARY, [], $wgSMWDbName );
+		/** Fandom change - end */
 	}
 
 	/**
