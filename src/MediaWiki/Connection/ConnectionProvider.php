@@ -69,7 +69,7 @@ class ConnectionProvider implements IConnectionProvider {
 		// Default configuration
 		$conf = [
 			'read'  => DB_REPLICA,
-			'write' => DB_MASTER
+			'write' => DB_PRIMARY
 		];
 
 		if ( isset( $this->localConnectionConf[$this->provider] ) ) {

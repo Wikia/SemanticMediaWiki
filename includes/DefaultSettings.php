@@ -169,18 +169,18 @@ return (function() {
 		# Available DB index as provided by MediaWiki:
 		#
 		# - DB_REPLICA (1.27.4+)
-		# - DB_MASTER
+		# - DB_REPLICA
 		#
 		# @since 2.5.3
 		##
 		'smwgLocalConnectionConf' => [
 			'mw.db' => [
 				'read'  => DB_REPLICA,
-				'write' => DB_MASTER
+				'write' => DB_PRIMARY
 			],
 			'mw.db.queryengine' => [
 				'read'  => DB_REPLICA,
-				'write' => DB_MASTER
+				'write' => DB_PRIMARY
 			]
 		],
 		##
