@@ -163,14 +163,21 @@ class Rebuilder {
 	 * @return int
 	 */
 	public function getMaxId() {
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Use correct DB connection when using external DB (PLATFORM-4795)
+		 */
+		$dbr = $this->store->getConnection( 'mw.db.source' );
 		$db = $this->store->getConnection( 'mw.db' );
 
-		$maxByPageId = (int)$db->selectField(
+		$maxByPageId = (int)$dbr->selectField(
 			'page',
 			'MAX(page_id)',
 			'',
 			__METHOD__
 		);
+		/** Fandom change - end */
 
 		$maxBySmwId = (int)$db->selectField(
 			SQLStore::ID_TABLE,
@@ -439,12 +446,18 @@ class Rebuilder {
 
 	private function next_position( &$id, $emptyRange ) {
 		$nextPosition = $id + $this->iterationLimit;
+		/**
+		 * Fandom change - begin
+		 * @author ttomalak
+		 * Use correct DB connection when using external DB (PLATFORM-4795)
+		 */
+		$dbr = $this->store->getConnection( 'mw.db.source' );
 		$db = $this->store->getConnection( 'mw.db' );
 
 		// nothing found, check if there will be more pages later on
 		if ( $emptyRange && $nextPosition > SQLStore::FIXED_PROPERTY_ID_UPPERBOUND ) {
 
-			$nextByPageId = (int)$db->selectField(
+			$nextByPageId = (int)$dbr->selectField(
 				'page',
 				'page_id',
 				"page_id >= $nextPosition",
@@ -453,6 +466,7 @@ class Rebuilder {
 					'ORDER BY' => "page_id ASC"
 				]
 			);
+			/** Fandom change - end */
 
 			$nextBySmwId = (int)$db->selectField(
 				SQLStore::ID_TABLE,

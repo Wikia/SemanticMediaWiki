@@ -4,6 +4,7 @@ namespace SMW\MediaWiki\Hooks;
 
 use DatabaseUpdater;
 use Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterFactory;
 use ReflectionProperty;
 use SMW\MediaWiki\HookListener;
@@ -57,6 +58,19 @@ class ExtensionSchemaUpdates implements HookListener {
 	 * @return true
 	 */
 	public function process( Store $store ) {
+		/**
+		 * Fandom change - begin
+		 * Allow to prevent updates if not necessary
+		 *
+		 * PLATFORM-5337
+		 * @author ttomalak
+		 */
+		$hookContainer = MediaWikiServices::getInstance()->getHookContainer();
+		if ( !$hookContainer->run( 'SMW::Setup::BeforeUpdate' ) ) {
+			return true;
+		}
+		/** Fandom change - end */
+
 		$verbose = true;
 
 		$options = new Options(
