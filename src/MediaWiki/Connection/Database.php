@@ -817,4 +817,12 @@ class Database {
 
 		return $text;
 	}
+
+	/*
+	 * Fandom change - SemanticDrilldown compatibility with 1.43
+	 */
+	public function newSelectQueryBuilder() {
+		return $this->connRef->getConnection( 'read' )->newSelectQueryBuilder();
+	}
+
 }
