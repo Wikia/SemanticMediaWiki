@@ -4,7 +4,7 @@
 		{
 			"page": "Profile:Facetedsearch default profile",
 			"namespace": "SMW_NS_SCHEMA",
-			"import_performer": "SemanticMediaWikiImporter",
+			"import_performer": "FANDOMBot",
 			"contents": {
 				"importFrom": "/search/facetedsearch.defaultprofile.json"
 			},

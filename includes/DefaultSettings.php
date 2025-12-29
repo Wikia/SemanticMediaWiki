@@ -108,7 +108,7 @@ return ( static function () {
 		# @since 3.2
 		# @default []
 		##
-		'smwgImportPerformers' => [ 'SemanticMediaWikiImporter' ],
+		'smwgImportPerformers' => [ 'FANDOMBot' ],
 		# #
 
 		###
