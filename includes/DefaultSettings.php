@@ -2085,13 +2085,13 @@ return ( static function () {
 		# @since 3.0
 		# @default SMW_SASK_SUBMIT_POST
 		##
-        /**
-         * Fandom-start
-         * Use GET method in form on Special:Ask page.
-         * POST generates redirect which discards all results and params
-         */
-        'smwgSpecialAskFormSubmitMethod' => SMW_SASK_SUBMIT_GET,
-        /** Fandom-end */
+		/**
+		 * Fandom-start
+		 * Use GET method in form on Special:Ask page.
+		 * POST generates redirect which discards all results and params
+		 */
+		'smwgSpecialAskFormSubmitMethod' => SMW_SASK_SUBMIT_GET,
+		/** Fandom-end */
 		# #
 
 		##

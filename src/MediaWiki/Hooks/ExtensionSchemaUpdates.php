@@ -2,9 +2,9 @@
 
 namespace SMW\MediaWiki\Hooks;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Installer\DatabaseUpdater;
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporterFactory;
 use ReflectionProperty;
 use SMW\MediaWiki\HookListener;

@@ -2,8 +2,8 @@
 
 namespace SMW\Maintenance;
 
-use MediaWiki\MediaWikiServices;
 use MediaWiki\Maintenance\Maintenance;
+use MediaWiki\MediaWikiServices;
 use Onoi\MessageReporter\MessageReporter;
 use Onoi\MessageReporter\MessageReporterFactory;
 use SMW\Options;
@@ -119,17 +119,17 @@ class setupStore extends Maintenance {
 		 */
 		$services = MediaWikiServices::getInstance();
 		$config = $services->getMainConfig();
-		$wgSMWDB = $config->get( 'SMWDB' );
-		$wgSMWDbName = $config->get( 'SMWDbName' );
-		$wgSMWUseExternalDB = $config->get( 'SMWUseExternalDB' );
-		if ( !$wgSMWUseExternalDB ) {
+		$SMWDB = $config->get( 'SMWDB' );
+		$SMWDbName = $config->get( 'SMWDbName' );
+		$SMWUseExternalDB = $config->get( 'SMWUseExternalDB' );
+		if ( !$SMWUseExternalDB ) {
 			return $this->getDB( DB_PRIMARY );
 		}
 
 		return $services
 			->getDBLoadBalancerFactory()
-			->getExternalLB( $wgSMWDB )
-			->getMaintenanceConnectionRef( DB_PRIMARY, [], $wgSMWDbName );
+			->getExternalLB( $SMWDB )
+			->getMaintenanceConnectionRef( DB_PRIMARY, [], $SMWDbName );
 		/** Fandom change - end */
 	}
 
