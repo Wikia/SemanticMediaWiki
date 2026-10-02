@@ -64,6 +64,14 @@ class SpecialURIResolverTest extends \PHPUnit\Framework\TestCase {
 		);
 	}
 
+	public function testIsLocalRedirectTargetRejectsUserInfo(): void {
+		$instance = TestingAccessWrapper::newFromObject( new SpecialURIResolver() );
+
+		$this->assertFalse(
+			$instance->isLocalRedirectTarget( 'https://user:pass@' . $this->serverHost() . '/Foo' )
+		);
+	}
+
 	public function testIsLocalRedirectTargetRejectsDifferentHost(): void {
 		$instance = TestingAccessWrapper::newFromObject( new SpecialURIResolver() );
 

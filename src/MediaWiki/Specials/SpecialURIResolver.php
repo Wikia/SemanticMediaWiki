@@ -91,7 +91,9 @@ class SpecialURIResolver extends SpecialPage {
 		$targetBits = $urlUtils->parse( (string)$urlUtils->expand( $url, PROTO_CURRENT ) );
 		$serverBits = $urlUtils->parse( (string)$urlUtils->expand( '/', PROTO_CURRENT ) );
 
-		if ( $targetBits === null || $serverBits === null ) {
+		if ( $targetBits === null || $serverBits === null ||
+			isset( $targetBits['user'] ) || isset( $targetBits['pass'] )
+		) {
 			return false;
 		}
 
