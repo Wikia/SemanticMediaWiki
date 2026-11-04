@@ -6,6 +6,7 @@ use MediaWiki\MediaWikiServices;
 use SMW\MediaWiki\Specials\SpecialURIResolver;
 use SMW\Tests\PHPUnitCompat;
 use SMW\Tests\TestEnvironment;
+use Wikimedia\TestingAccessWrapper;
 
 /**
  * @covers \SMW\MediaWiki\Specials\SpecialURIResolver
@@ -46,6 +47,52 @@ class SpecialURIResolverTest extends \PHPUnit\Framework\TestCase {
 		$this->assertContains(
 			'https://www.w3.org/2001/tag/issues.html#httpRange-14',
 			$instance->getOutput()->getHTML()
+		);
+	}
+
+	private function serverHost(): string {
+		$urlUtils = MediaWikiServices::getInstance()->getUrlUtils();
+
+		return $urlUtils->parse( (string)$urlUtils->expand( '/', PROTO_CURRENT ) )['host'] ?? '';
+	}
+
+	public function testIsLocalRedirectTargetAllowsSameHost(): void {
+		$instance = TestingAccessWrapper::newFromObject( new SpecialURIResolver() );
+
+		$this->assertTrue(
+			$instance->isLocalRedirectTarget( 'http://' . $this->serverHost() . '/index.php/Foo' )
+		);
+	}
+
+	public function testIsLocalRedirectTargetRejectsDifferentHost(): void {
+		$instance = TestingAccessWrapper::newFromObject( new SpecialURIResolver() );
+
+		$this->assertFalse(
+			$instance->isLocalRedirectTarget( 'https://evil.example/index.php/Foo' )
+		);
+	}
+
+	public function testIsLocalRedirectTargetRejectsProtocolRelativeOffHost(): void {
+		$instance = TestingAccessWrapper::newFromObject( new SpecialURIResolver() );
+
+		$this->assertFalse(
+			$instance->isLocalRedirectTarget( '//evil.example/index.php/Foo' )
+		);
+	}
+
+	public function testIsLocalRedirectTargetRejectsUnparsableUrl(): void {
+		$instance = TestingAccessWrapper::newFromObject( new SpecialURIResolver() );
+
+		$this->assertFalse(
+			$instance->isLocalRedirectTarget( 'http://' )
+		);
+	}
+
+	public function testIsLocalRedirectTargetAllowsMixedCaseHost(): void {
+		$instance = TestingAccessWrapper::newFromObject( new SpecialURIResolver() );
+
+		$this->assertTrue(
+			$instance->isLocalRedirectTarget( 'http://' . strtoupper( $this->serverHost() ) . '/x' )
 		);
 	}
 

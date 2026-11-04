@@ -135,6 +135,10 @@ class PageBuilder {
 		return $html;
 	}
 
+	private function escapeMessage( string $text ): string {
+		return htmlspecialchars( $text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
+	}
+
 	private function getResultHtml() {
 		$resultList = '';
 		$resultMessage = '';
@@ -145,11 +149,13 @@ class PageBuilder {
 
 		// #1728
 		if ( !$this->pageRequestOptions->property->isValid() ) {
-			return [ ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->property->getErrors() ), '', 0 ];
+			$errors = ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->property->getErrors() );
+			return [ $this->escapeMessage( $errors ), '', 0 ];
 		}
 
 		if ( $this->pageRequestOptions->valueString !== '' && !$this->pageRequestOptions->value->isValid() ) {
-			return [ ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->value->getErrors() ), '', 0 ];
+			$errors = ProcessingErrorMsgHandler::getMessagesAsString( $this->pageRequestOptions->value->getErrors() );
+			return [ $this->escapeMessage( $errors ), '', 0 ];
 		}
 
 		// Find out where the subject is used in connection with a query
@@ -176,7 +182,7 @@ class PageBuilder {
 		$resultMessage = $this->messageBuilder->getMessage(
 			$resultMessageKey,
 			$this->pageRequestOptions->property->getShortHTMLText( $this->linker ),
-			$this->pageRequestOptions->value->getShortHTMLText( $this->linker ) )->text();
+			$this->escapeMessage( (string)$this->pageRequestOptions->value->getWikiValue() ) )->text();
 
 		if ( $exactCount > 0 ) {
 			$resultList = $this->makeResultList( $exactResults, $this->pageRequestOptions->limit, true );

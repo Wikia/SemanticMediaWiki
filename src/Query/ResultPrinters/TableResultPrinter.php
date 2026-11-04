@@ -129,6 +129,9 @@ class TableResultPrinter extends ResultPrinter {
 				// #2702 Use a fixed output on a requested plain printout
 				$mode = $this->isHTML && $isPlain ? SMW_OUTPUT_WIKI : $outputMode;
 				$text = $pr->getText( $mode, ( $isPlain ? null : $this->mLinker ) );
+				if ( $this->isHTML && $isPlain ) {
+					$text = htmlspecialchars( (string)$text, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
+				}
 				$headerList[] = $pr->getCanonicalLabel();
 				$this->htmlTable->header( ( $text === '' ? '&nbsp;' : $text ), $attributes );
 			}
@@ -352,10 +355,28 @@ class TableResultPrinter extends ResultPrinter {
 		} elseif ( !$isSubject && $sep === 'ol' && count( $values ) > 1 ) {
 			$html = '<ol><li>' . implode( '</li><li>', $values ) . '</li></ol>';
 		} else {
-			$html = implode( $this->params['sep'], $values );
+			$html = implode( $this->getValueSeparator( $outputMode ), $values );
 		}
 
 		return $html;
+	}
+
+	/**
+	 * Only inline wikitext passes through parser sanitization. Other output modes
+	 * must escape separators, except safe line breaks.
+	 */
+	private function getValueSeparator( int $outputMode ): string {
+		$sep = $this->params['sep'];
+
+		if ( $outputMode === SMW_OUTPUT_WIKI ) {
+			return $sep;
+		}
+
+		if ( preg_match( '#^\s*<br\s*/?>\s*$#i', $sep ) ) {
+			return $sep;
+		}
+
+		return htmlspecialchars( $sep, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8' );
 	}
 
 	/**
